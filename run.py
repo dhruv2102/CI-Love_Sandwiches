@@ -1,6 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
-
+from pprint import pprint
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -78,11 +78,27 @@ def update_worksheet(data, sheet_name):
     worksheet.append_row(data)
 
 
+def get_last_entries_sales():
+    """
+    Collects columns of data from sales worksheet, collecting
+    the last 5 entries for each sandwich and returns the data
+    as a list of lists.
+    """
+    sales = SHEET.worksheet("sales")
+
+    columns = []
+    for ind in range(1,7):
+        column = sales.col_values(ind)
+        columns.append(column[-5:])
+    return columns
+
+
 def main():
     sales_data = get_sales_data()
     update_worksheet(sales_data, "sales")
     surplus_data = calculate_surplus_data(sales_data)
     update_worksheet(surplus_data, "surplus")
+    sales_columns = get_last_entries_sales()
 
 
 if __name__ == "__main__":
