@@ -23,29 +23,43 @@ def get_sales_data():
     print("Example: 10,20,30,40,50,60\n")
 
     data_str = input("Enter your data here: ")
+    print("\n")
     
     sales_data = data_str.split(',')
-    validate_data(sales_data)
+    sales_data = validate_data(sales_data)
+    print('Completed. \n')
+
+    return sales_data
 
 def validate_data(values):
-    """
+    '''
     Total values is 6
-    """
+    All values should be able to convert to integer
+    '''
     try:
-        [int(value) for value in values]
+        new_data = [int(value) for value in values]
         if (len(values)) != 6:
-            raise ValueError(
-                f"Eactly 6 values required, you provided {len(values)} values"
-        )
-
+            raise ValueError(f"Eactly 6 values required, you provided {len(values)} values")
+    
+        return new_data
     except ValueError as e:
-        print(f"Invalid data: {e}, try again")
+        print(f"Invalid data: {e}, try again. \n")
         get_sales_data()
 
 
+def update_sales_worksheet(data):
+    """
+    Update sales worksheet, add new row with the list data provided
+    """
+    print("Updating sales worksheet... \n")
+    sales_worksheet = SHEET.worksheet("sales")
+    sales_worksheet.append_row(data)
+
+    print("Sales worksheet appended successfully... \n")
 
 def main():
-    get_sales_data()
+    data = get_sales_data()
+    update_sales_worksheet(data)
 
 
 if __name__ == "__main__":
