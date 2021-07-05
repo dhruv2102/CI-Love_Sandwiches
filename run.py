@@ -49,17 +49,6 @@ def validate_data(values):
         get_sales_data()
 
 
-def update_sales_worksheet(data):
-    """
-    Update sales worksheet, add new row with the list data provided
-    """
-    print("Updating sales worksheet... \n")
-    sales_worksheet = SHEET.worksheet("sales")
-    sales_worksheet.append_row(data)
-
-    print("Sales worksheet appended successfully... \n")
-
-
 def calculate_surplus_data(sales_row):
     """
     Compare sales with stock and calculate the surplus for each item type.
@@ -80,20 +69,20 @@ def calculate_surplus_data(sales_row):
     return surplus_row
 
 
-def update_surplus_worksheet(data):
+def update_worksheet(data, sheet_name):
     """
     Updating surplus worksheet
     """
-    print("Updating surplus worksheet... \n")
-    surplus_worksheet = SHEET.worksheet("surplus")
-    surplus_worksheet.append_row(data)
+    print(f"Updating {sheet_name} worksheet... \n")
+    worksheet = SHEET.worksheet(sheet_name)
+    worksheet.append_row(data)
 
 
 def main():
     sales_data = get_sales_data()
-    update_sales_worksheet(sales_data)
-    surplus = calculate_surplus_data(sales_data)
-    update_surplus_worksheet(surplus)
+    update_worksheet(sales_data, "sales")
+    surplus_data = calculate_surplus_data(sales_data)
+    update_worksheet(surplus_data, "surplus")
 
 
 if __name__ == "__main__":
